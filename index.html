@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Dosis:400,600,700' rel='stylesheet' type='text/css'>	
+	
+	<meta charset="utf-8">
+	
+	<title>BradRBarber</title>
+	<link type="text/css" href="css/hot-sneaks/jquery-ui-1.8.20.custom.css" rel="stylesheet" />
+	<link rel="stylesheet" href="contactable/contactable.css" type="text/css" />	<style>
+	
+		
+		#myDivContainer  {
+ 		 overflow:hidden;
+  		width:1000px"
+			}
+
+		#myDivInner{
+			overflow:hidden;
+			width:2000px;
+			
+		}
+		
+		#myDiv{
+		float:left;
+		width:100px;
+		height:100px;
+		margin:15px;
+		}
+
+	    
+		
+		#bg {
+			position:fixed; 
+			top:-50%; 
+			left:-50%; 
+			width:200%; 
+			height:50%;
+		}
+		#bg img {
+			position:absolute; 
+			top:0; 
+			left:0; 
+			right:0; 
+			bottom:0; 
+			margin:auto; 
+			min-width:50%;
+			min-height:50%;
+		}
+		
+		/*set page wrap to absolute with a property of right:0px to move it to the right for now it's centered*/
+		#page-wrap { position: relative; z-index: 2; width: 850px; margin: 50px auto; padding: 25px; background: white; -moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black; }
+		p { font: 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
+	
+		h1 { font-family: 'Dosis', sans-serif; }
+	
+.image-popout-shadow {
+	-moz-box-shadow: 0 0 5px #333;
+	-webkit-box-shadow: 0 0 5px #333;
+	box-shadow: 0 0 5px #333;
+	position:absolute;
+	z-index:2;
+}
+.image-popout li{
+	float:left;
+	margin-right: 20px;
+}
+
+img#life {padding-left:30px;}
+
+	
+html { 
+	background: url(images/Blue_Stage.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+	
+	
+	</style>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="contactable/jquery.contactable.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>				
+<script type="text/javascript" src="js/imagepopout.js"></script>
+	<script>
+				$(function(){
+					//HOVER EFFECT FOR IMAGES IN SCROLL BAR
+	
+					var	xwidth = ($('#myDiv > img').width())/2;
+					var	xheight = ($('#myDiv > img').height())/2;
+					$('#myDiv > img').css(
+							{'width': xwidth, 'height': xheight}
+					); //By default set the width and height of the image.
+					console.log(xwidth);
+					$('#myDiv > img').parent().css(
+							{'width': xwidth, 'height': xheight}
+					);
+					
+					$('#myDiv > img').hover(
+					function() {
+						$(this).stop().animate( {
+							width   : xwidth * 2,
+							height  : xheight * 2,
+							margin : -(xwidth/2)
+							}, 200
+						); //END FUNCTION
+						
+						$(this).addClass('image-popout-shadow');
+						
+					}, //END HOVER IN
+					function() {
+						$(this).stop().animate( {
+							width   : xwidth,
+							height  : xheight,
+							margin : 0
+							}, 200, function() {
+								$(this).removeClass('image-popout-shadow');
+					}); //END FUNCTION
+			
+					}
+					);
+		
+		
+		
+					//START CONTACTABLE 
+				 $('#contactable').contactable({
+				  subject: 'feedback URL:'+location.href, // Subject for the message
+					url: 'contactable/mail.php', //URL path of mail.php file must be absolute
+					name: 'Name', // Name label
+					email: 'Email', // Email label
+					dropdownTitle:'', //Dropdown label, if empty no dropdown is displayed
+					dropdownOptions: ['General', 'Website bug', 'Feature request'], // Select options for dropdown {array}
+					message : 'Message', // Message label
+					submit : 'SEND', // Label text for the submit button
+					recievedMsg : 'Thank you for your message', // Text to display when message successfully sends
+					notRecievedMsg : 'Sorry but your message could not be sent, try again later', // Text to display when message fails to send
+					disclaimer: 'Please feel free to get in touch, we value your feedback', // Text to display at the foot of the form
+					hideOnSubmit: true // hide the form after submitting it
+				 });
+				
+				$('#slider').slider({
+					range: true,
+					values: [17, 67]
+				});
+				//hover states on the static widgets
+				$('#dialog_link, ul#icons li').hover(
+					function() { $(this).addClass('ui-state-hover'); },
+					function() { $(this).removeClass('ui-state-hover'); }
+				);
+				
+				//scrollpane parts
+		var scrollPane = $( ".scroll-pane" ),
+			scrollContent = $( ".scroll-content" );
+		
+		//build slider
+		var scrollbar = $( ".scroll-bar" ).slider({
+			slide: function( event, ui ) {
+				if ( scrollContent.width() > scrollPane.width() ) {
+					scrollContent.css( "margin-left", Math.round(
+						ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+					) + "px" );
+				} else {
+					scrollContent.css( "margin-left", 0 );
+				}
+			}
+		});
+		
+		//append icon to handle
+		var handleHelper = scrollbar.find( ".ui-slider-handle" )
+		.mousedown(function() {
+			scrollbar.width( handleHelper.width() );
+		})
+		.mouseup(function() {
+			scrollbar.width( "100%" );
+		})
+		.append( "<span class='ui-icon ui-icon-grip-dotted-vertical'></span>" )
+		.wrap( "<div class='ui-handle-helper-parent'></div>" ).parent();
+		
+		//change overflow to hidden now that slider handles the scrolling
+		scrollPane.css( "overflow", "hidden" );
+		
+		//size scrollbar and handle proportionally to scroll distance
+		function sizeScrollbar() {
+			var remainder = scrollContent.width() - scrollPane.width();
+			var proportion = remainder / scrollContent.width();
+			var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+			scrollbar.find( ".ui-slider-handle" ).css({
+				width: handleSize,
+				"margin-left": -handleSize / 2
+			});
+			handleHelper.width( "" ).width( scrollbar.width() - handleSize );
+		}
+		
+		//reset slider value based on scroll content position
+		function resetValue() {
+			var remainder = scrollPane.width() - scrollContent.width();
+			var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+				parseInt( scrollContent.css( "margin-left" ) );
+			var percentage = Math.round( leftVal / remainder * 100 );
+			scrollbar.slider( "value", percentage );
+		}
+		
+		//if the slider is 100% and window gets larger, reveal content
+		function reflowContent() {
+				var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+				var gap = scrollPane.width() - showing;
+				if ( gap > 0 ) {
+					scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+				}
+		}
+		
+		//change handle position on window resize
+		$( window ).resize(function() {
+			resetValue();
+			sizeScrollbar();
+			reflowContent();
+		});
+		//init scrollbar size
+		setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+	
+	//USE AJAX TO LOAD IMAGES 
+		$.ajax({
+			
+			type : "GET",
+			dataType : 'json',
+			url : 'json/sliderimages.json',
+			success : parseJSON
+		}).error(function(jq, status, error){
+			console.log(error);
+		});
+		
+		function parseJSON(jsonStr){
+				$.each(jsonStr.sliderimages, function(i, item){
+				$('.scroll-content')
+				.append('<div class="scroll-content-item ui-widget-header"><img src=\"' + item.Pic  + '\" /></div>'); 
+				//.append('<div class="scroll-content-item ui-widget-header"> ' + "<img src=" + "\"" + item.Pic + "\"" + "</img></div>"); 
+				});
+				};		
+				
+		
+		$.ajax({
+			
+			type : "GET",
+			dataType : 'json',
+			url : 'json/sgw.json',
+			success : parseJSON1
+		}).error(function(jq, status, error){
+			console.log(error);
+		});		
+				
+				function parseJSON1(jsonStr){
+				$('#tb1 table').append("<tr><th>Piece</th><th>Price</th><th>Dimensions</th><th>Weight</th><th>Picture</th></tr>");
+				$.each(jsonStr.sgw, function(i, item){
+					
+					console.log(item.Pic);
+					console.log(item.Piece);
+					console.log(item.Price);
+					console.log(item.Dimensions);
+					console.log(item.Weight);		
+				$('#tb1 table')
+				.append("<tr><td>" + item.Piece + "</td><td>" + item.Price + "</td><td>" + item.Dimensions +"</td><td>" + item.Weight + "</td><td><img src=" + "\"" + item.Pic + "\"" + "</img></td></tr>");
+						
+				});
+			};
+		
+			 $('#tabs').tabs();
+  });
+	
+	
+
+				
+			
+				
+				
+				</script>
+</head>
+
+<body>
+	<div id="contactable">
+	
+			</div>
+	<div id="page-wrap">
+		<img id="life" align="center" src="images/life2.jpg" alt="">
+
+<h1 align="center"> Web 205 Portal Page</h1>
+<h1 align="center"> Brad Barber</h1>
+
+<img style="float: left; margin-right: 100px " src="viking.jpg" />
+		<p>Hi my name is Brad. I'm 29, been living in  Seattle for the last 5 years. I was in the Navy for 6 years after high school. When I got out I went to school for nothing particular and then became a mainenance man. At some point I thought "Hey I like computers and the internet why not work in that field" So here I am, finally figuring out what I want to do when I grow up (or at least turn 30)</p> 
+	</br>
+	</br>
+	<h1 align="center"> Assignments</h1>
+	<a href="https://docs.google.com/document/d/1zkRSfNELNGRS-dSibaG8c2A5n7_NE23WC1kkPnatNws/edit"<p>Assignment 3 </p></a>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	<p>Assignment: </p>
+	
+	<a href="http://jigsaw.w3.org/css-validator/check/referer"</a><img src = "W3C-Validation.jpg" />
+	
+	
+	</div>
+
+	 <!--At bottom, 'cause it's not really content 
+	<div id="bg">
+		<img src="images/Shiny_Swirl.jpg"  alt="">
+		<img src="images/Abstract.jpg"  alt="">
+	</div>
+	-->
+
+
+
+
+
+
+
+</body>
+
+</html>
